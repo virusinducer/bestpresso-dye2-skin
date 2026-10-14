@@ -47,7 +47,7 @@ jobs:
             exit 0
           fi
           # Same version, new build (our own patch changed): replace the release.
-          gh release delete "$tag" --cleanup-tag --yes 2>/dev/null || true
+          gh release delete "$tag" --repo "$GITHUB_REPOSITORY" --cleanup-tag --yes || true
           rm -rf skin/.git
           (cd skin && zip -qr "../bestpresso-dye-$tag.zip" .)
           gh release create "$tag" "bestpresso-dye-$tag.zip" \
