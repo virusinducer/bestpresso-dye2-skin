@@ -35,19 +35,22 @@ jobs:
           [ -n "$version" ] && [ "$version" != "null" ] || { echo "no version in skin-manifest.json"; exit 1; }
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
-      - name: Publish a release if this build is new
+      - name: Publish a release if this build is new or changed
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.skin.outputs.version }}
         run: |
           tag="v$VERSION"
-          if gh release view "$tag" >/dev/null 2>&1; then
-            echo "$tag already released"
+          sha=$(git -C skin rev-parse HEAD)
+          if gh release view "$tag" --json body --jq .body 2>/dev/null | grep -q "build $sha"; then
+            echo "$tag already released from this build"
             exit 0
           fi
+          # Same version, new build (our own patch changed): replace the release.
+          gh release delete "$tag" --cleanup-tag --yes 2>/dev/null || true
           rm -rf skin/.git
           (cd skin && zip -qr "../bestpresso-dye-$tag.zip" .)
           gh release create "$tag" "bestpresso-dye-$tag.zip" \
             --repo "$GITHUB_REPOSITORY" \
             --title "$tag" \
-            --notes "Bestpresso skin with the DYE2 button, built by virusinducer/bestpresso-dye2. Install the matching plugin from that repo."
+            --notes "Bestpresso $VERSION by Hendri (xinghendri/bestpresso) with a DYE2 button, built by virusinducer/bestpresso-dye2 (build $sha). Install the matching plugin from that repo."
