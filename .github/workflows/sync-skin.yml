@@ -1,6 +1,6 @@
 name: Sync skin release
 
-# The skin is built by virusinducer/bestpresso-dye2 and published on its `dist` branch. Decaid installs
+# The skin is built by virusinducer/bestpresso-dye2-plugin and published on its `dist` branch. Decaid installs
 # skins from a repo's latest release, so this repo republishes each new build as a release.
 on:
   schedule:
@@ -22,7 +22,7 @@ jobs:
       - name: Fetch the built skin
         uses: actions/checkout@v4
         with:
-          repository: virusinducer/bestpresso-dye2
+          repository: virusinducer/bestpresso-dye2-plugin
           ref: dist
           path: skin
 
@@ -53,4 +53,4 @@ jobs:
           gh release create "$tag" "bestpresso-dye-$tag.zip" \
             --repo "$GITHUB_REPOSITORY" \
             --title "$tag" \
-            --notes "Bestpresso $VERSION by Hendri (xinghendri/bestpresso) with a DYE2 button, built by virusinducer/bestpresso-dye2 (build $sha). Install the matching plugin from that repo."
+            --notes "Bestpresso $VERSION by Hendri (xinghendri/bestpresso) with a DYE2 button, built by virusinducer/bestpresso-dye2-plugin (build $sha). Install the matching plugin from that repo."
