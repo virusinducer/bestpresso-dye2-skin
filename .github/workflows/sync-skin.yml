@@ -1,0 +1,53 @@
+name: Sync skin release
+
+# The skin is built by virusinducer/bestpresso-dye2 and published on its `dist` branch. Decaid installs
+# skins from a repo's latest release, so this repo republishes each new build as a release.
+on:
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Fetch the built skin
+        uses: actions/checkout@v4
+        with:
+          repository: virusinducer/bestpresso-dye2
+          ref: dist
+          path: skin
+
+      - name: Read the skin version
+        id: skin
+        run: |
+          version=$(jq -r .version skin/skin-manifest.json)
+          id=$(jq -r .id skin/skin-manifest.json)
+          [ "$id" = "bestpresso-dye" ] || { echo "unexpected skin id: $id"; exit 1; }
+          [ -n "$version" ] && [ "$version" != "null" ] || { echo "no version in skin-manifest.json"; exit 1; }
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Publish a release if this build is new
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.skin.outputs.version }}
+        run: |
+          tag="v$VERSION"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "$tag already released"
+            exit 0
+          fi
+          rm -rf skin/.git
+          (cd skin && zip -qr "../bestpresso-dye-$tag.zip" .)
+          gh release create "$tag" "bestpresso-dye-$tag.zip" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "$tag" \
+            --notes "Bestpresso skin with the DYE2 button, built by virusinducer/bestpresso-dye2. Install the matching plugin from that repo."
