@@ -4,7 +4,7 @@ name: Sync skin release
 # skins from a repo's latest release, so this repo republishes each new build as a release.
 on:
   schedule:
-    - cron: '23 * * * *'
+    - cron: '23 7 * * *'
   workflow_dispatch:
 
 permissions:

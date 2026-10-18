@@ -8,8 +8,8 @@ The button only shows while the plugin `virusinducer/bestpresso-dye2-plugin` (**
 installed and enabled.
 
 Everything is built in [virusinducer/bestpresso-dye2-plugin](https://github.com/virusinducer/bestpresso-dye2-plugin),
-which tracks upstream Bestpresso and DYE2 daily. A workflow here republishes each new skin build as a
-release within the hour, because Decaid installs skins from releases.
+which tracks upstream Bestpresso and DYE2 every 6 hours. A workflow here republishes each new skin build as a
+release once a day, because Decaid installs skins from releases.
 
 ## Credits
 
