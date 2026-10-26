@@ -16,3 +16,5 @@ release once a day, because Decaid installs skins from releases.
 Bestpresso is by Hendri ([xinghendri/bestpresso](https://github.com/xinghendri/bestpresso)). The DYE2
 plugin it connects to is by Mark Chau at Decent Espresso ([decentespresso/dye2](https://github.com/decentespresso/dye2)).
 This repository only republishes the patched build.
+
+Changes for the skin and the plugin, including upstream Bestpresso and DYE2 notes: [CHANGELOG.md](https://github.com/virusinducer/bestpresso-dye2-plugin/blob/main/CHANGELOG.md).

@@ -53,4 +53,4 @@ jobs:
           gh release create "$tag" "bestpresso-dye-$tag.zip" \
             --repo "$GITHUB_REPOSITORY" \
             --title "$tag" \
-            --notes "Bestpresso $VERSION by Hendri (xinghendri/bestpresso) with a DYE2 button, built by virusinducer/bestpresso-dye2-plugin (build $sha). Install the matching plugin from that repo."
+            --notes "Bestpresso $VERSION by Hendri (xinghendri/bestpresso) with a DYE2 button, built by virusinducer/bestpresso-dye2-plugin (build $sha). Install the matching plugin from that repo. Changes: https://github.com/virusinducer/bestpresso-dye2-plugin/blob/main/CHANGELOG.md"
